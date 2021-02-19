@@ -8,8 +8,6 @@ function label2ScopedLabel(labelElement: HTMLSpanElement): void {
     labelTextElement.style.backgroundColor ||
     labelElement.style.cssText.match(/--label-background-color:(.*?)?;/)?.[1];
 
-  console.log(scope, label, color, labelElement);
-
   if (scope && label && color) {
     labelElement.className = `${labelElement.className} gl-label-scoped`;
     labelElement.setAttribute(
@@ -35,6 +33,30 @@ function label2ScopedLabel(labelElement: HTMLSpanElement): void {
   }
 }
 
+const observer = new MutationObserver((mutationsList) => {
+  mutationsList.forEach((mutation) => {
+    mutation.addedNodes.forEach((node) => {
+      if (node instanceof HTMLElement) {
+        if (
+          node?.classList?.contains("gl-label") &&
+          !node?.classList?.contains("gl-label-scoped")
+        ) {
+          label2ScopedLabel(node);
+        } else {
+          node
+            .querySelectorAll(".gl-label:not(.gl-label-scoped)")
+            .forEach(label2ScopedLabel);
+        }
+      }
+    });
+  });
+});
+
+observer.observe(document.body, {
+  childList: true,
+  subtree: true,
+});
+
 document
-  .querySelectorAll<HTMLSpanElement>(".gl-label:not(.gl-label-scoped)")
+  .querySelectorAll(".gl-label:not(.gl-label-scoped)")
   .forEach(label2ScopedLabel);
