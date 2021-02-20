@@ -33,33 +33,30 @@ function label2ScopedLabel(labelElement: HTMLSpanElement): void {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-if ((window as any).gon.gitlab_url) {
-  const observer = new MutationObserver((mutationsList) => {
-    mutationsList.forEach((mutation) => {
-      mutation.addedNodes.forEach((node) => {
-        if (node instanceof HTMLElement) {
-          if (
-            node?.classList?.contains("gl-label") &&
-            !node?.classList?.contains("gl-label-scoped")
-          ) {
-            label2ScopedLabel(node);
-          } else {
-            node
-              .querySelectorAll(".gl-label:not(.gl-label-scoped)")
-              .forEach(label2ScopedLabel);
-          }
+const observer = new MutationObserver((mutationsList) => {
+  mutationsList.forEach((mutation) => {
+    mutation.addedNodes.forEach((node) => {
+      if (node instanceof HTMLElement) {
+        if (
+          node?.classList?.contains("gl-label") &&
+          !node?.classList?.contains("gl-label-scoped")
+        ) {
+          label2ScopedLabel(node);
+        } else {
+          node
+            .querySelectorAll(".gl-label:not(.gl-label-scoped)")
+            .forEach(label2ScopedLabel);
         }
-      });
+      }
     });
   });
+});
 
-  observer.observe(document.body, {
-    childList: true,
-    subtree: true,
-  });
+observer.observe(document.body, {
+  childList: true,
+  subtree: true,
+});
 
-  document
-    .querySelectorAll(".gl-label:not(.gl-label-scoped)")
-    .forEach(label2ScopedLabel);
-}
+document
+  .querySelectorAll(".gl-label:not(.gl-label-scoped)")
+  .forEach(label2ScopedLabel);
