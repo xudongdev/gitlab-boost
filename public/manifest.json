@@ -1,16 +1,15 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "GitLab Boost",
   "description": "Make some optimizations to the GitLab platform interface.",
   "version": "0.0.1",
   "icons": {
     "128": "images/icon.png"
   },
-  "permissions": ["<all_urls>"],
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["scoped-labels.js"]
-    }
-  ]
+  "permissions": ["activeTab", "tabs"],
+  "host_permissions": ["http://*/*", "*://*/*"],
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "action": {}
 }
