@@ -1,18 +1,7 @@
 import { useMemo } from "react";
+import { PageType } from "../enums/PageType";
+import { getPageType } from "../utils/getPageType";
 
-export enum PageType {
-  CREATE_ISSUE = "CREATE_ISSUE",
-  UNKNOWN = "UNKNOWN",
-}
-
-export function usePageType(): string {
-  return useMemo(() => {
-    const { pathname } = new URL(window.location.href);
-
-    if (pathname.includes("/-/issues/new")) {
-      return PageType.CREATE_ISSUE;
-    }
-
-    return PageType.UNKNOWN;
-  }, [window.location.href]);
+export function usePageType(): PageType {
+  return useMemo(() => getPageType(), [window.location.href]);
 }
