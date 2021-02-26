@@ -5,8 +5,11 @@ const { NODE_ENV } = process.env;
 
 module.exports = {
   mode: NODE_ENV === "production" ? "production" : "development",
+  devtool: "inline-source-map",
   entry: {
+    "service-worker": resolve(__dirname, "./src/service-worker"),
     "scoped-labels": resolve(__dirname, "./src/content-scripts/scoped-labels"),
+    panel: resolve(__dirname, "./src/content-scripts/panel"),
   },
   resolve: {
     extensions: [".js", ".jsx", ".ts", ".tsx"],
